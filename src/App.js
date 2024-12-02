@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ClassificacaoIdades from "./ClassificacaoIdades";
+import RegistroDeGastos from "./RegistroDeGastos";
+import Grafico from "./Grafico";
+import Arvore from "./Arvore";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ display: 'flex', gap: '70px'}}>
+      <row>
+      <Grafico/>
+      <br/>
+      <Arvore/>
+      </row>
+      <row>
+      <ClassificacaoIdades />
+      </row>
+      <row>
+        <RegistroDeGastos/>
+      </row>
     </div>
   );
 }

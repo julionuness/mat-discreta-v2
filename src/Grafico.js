@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Box, Container, TextField, Button, Typography, Alert } from '@mui/material';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { compile } from 'mathjs'; // Import math.js
 
 // Registrar os componentes necessários para o Chart.js
 ChartJS.register(
@@ -20,11 +21,11 @@ const Grafico = () => {
   const [graphData, setGraphData] = useState(null); 
   const [error, setError] = useState(''); 
 
-
   const generateData = (xArr, func) => {
     try {
+      const expression = compile(func); // Compila a função usando math.js
       return xArr.map(x => {
-        return eval(func.replace(/x/g, x)); // Substitui x na função 
+        return expression.evaluate({ x });
       });
     } catch (err) {
       setError('Erro ao calcular a função. Verifique a sintaxe.');
@@ -35,7 +36,7 @@ const Grafico = () => {
   const handleSubmit = () => {
     setError('');
     
-    // Converçãp do x para um array 
+    // Converção do x para um array 
     const xArr = xValues.split(',').map(val => parseFloat(val.trim()));
 
     if (xArr.some(isNaN)) {
@@ -43,7 +44,7 @@ const Grafico = () => {
       return;
     }
 
-    // Gera y apartir dos valores do x
+    // Gera y a partir dos valores do x
     const yArr = generateData(xArr, functionStr);
 
     // Gera o gráfico com os dados fornecidos

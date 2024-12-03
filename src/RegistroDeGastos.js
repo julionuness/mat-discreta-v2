@@ -28,7 +28,9 @@ function RegistroDeGastos() {
       return;
     }
 
+    // Gera um ID único para cada gasto
     const novoGasto = {
+      id: gastos.length + 1,  // ID incremental baseado no tamanho da lista
       descricao,
       valor: parseFloat(valor),
     };
@@ -109,13 +111,15 @@ function RegistroDeGastos() {
               <Table sx={{ minWidth: 650 }} aria-label="tabela de gastos">
                 <TableHead>
                   <TableRow>
+                    <TableCell><strong>ID</strong></TableCell>
                     <TableCell><strong>Descrição</strong></TableCell>
                     <TableCell align="right"><strong>Valor (R$)</strong></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {gastos.map((gasto, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={gasto.id}>  {/* Usando o ID único como chave */}
+                      <TableCell>{gasto.id}</TableCell>  {/* Exibindo o ID */}
                       <TableCell>
                         <TextField
                           variant="standard"

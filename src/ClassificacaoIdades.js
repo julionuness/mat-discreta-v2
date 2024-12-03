@@ -9,18 +9,26 @@ function ClassificacaoIdades() {
 
   const agruparIdades = () => {
     setError('');
-    const listaIdades = idades.split(',').map((idade) => parseInt(idade.trim(), 10));
-    const listaIntervalos = intervalos.split(',').map((intervalo) => intervalo.trim());
 
-    if (listaIdades.some((idade) => isNaN(idade)) || listaIntervalos.some((intervalo) => !intervalo.includes('-'))) {
-      setError('Por favor, insira valores válidos para idades e intervalos.');
+    // Validação das idades
+    const listaIdades = idades.split(',').map((idade) => parseInt(idade.trim(), 10));
+    if (listaIdades.some((idade) => isNaN(idade))) {
+      setError('Por favor, insira valores válidos para as idades.');
       return;
     }
 
+    // Validação dos intervalos
+    const listaIntervalos = intervalos.split(',').map((intervalo) => intervalo.trim());
+    if (listaIntervalos.some((intervalo) => !intervalo.includes('-'))) {
+      setError('Por favor, insira intervalos válidos no formato X-Y.');
+      return;
+    }
+
+    // Processamento dos dados válidos
     const grupos = listaIntervalos.map((intervalo) => {
       const [min, max] = intervalo.split('-').map((num) => parseInt(num.trim(), 10));
-      const grupo = listaIdades.filter((idade) => (idade >= min && (max ? idade <= max : true)));
-      return { intervalo, count: grupo.length };
+      const grupo = listaIdades.filter((idade) => idade >= min && idade <= max);
+      return { intervalo, idades: grupo };
     });
 
     setResultado(grupos);
@@ -30,7 +38,7 @@ function ClassificacaoIdades() {
     <Box
       sx={{
         maxWidth: 500,
-        mx: "auto",
+        mx: 'auto',
         mt: 4,
         p: 3,
         boxShadow: 3,
@@ -89,7 +97,7 @@ function ClassificacaoIdades() {
             <Card key={index} sx={{ mb: 2, backgroundColor: '#fff' }}>
               <CardContent>
                 <Typography variant="body1" align="center">
-                  <strong>Intervalo:</strong> {grupo.intervalo} | <strong>Contagem:</strong> {grupo.count}
+                  <strong>Intervalo:</strong> {grupo.intervalo} | <strong>Idades:</strong> {grupo.idades.join(', ')}
                 </Typography>
               </CardContent>
             </Card>
